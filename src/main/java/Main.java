@@ -1,10 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
-public class Main extends JFrame implements ActionListener {
+public class Main extends JFrame implements ActionListener, KeyListener {
 
     private JButton[][] buttons = new JButton[5][5];
 
@@ -16,7 +14,8 @@ public class Main extends JFrame implements ActionListener {
     public native char[] getBoard();
     public native int makeMove(int row, int col);
     public native char getCurrentPlayer();
-    public native int moveActiveCell(int direction);
+    public native int[] getActiveCell();
+    public native void moveActiveCell(int direction);
 
     public Main() {
         setTitle("5x5 Tic-Tac-Toe");
@@ -25,8 +24,11 @@ public class Main extends JFrame implements ActionListener {
 
         initializeButtons();
         resetGame();
+        updateBoard();
 
+        addKeyListener(this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setFocusable(true);
         setVisible(true);
     }
 
@@ -38,6 +40,9 @@ public class Main extends JFrame implements ActionListener {
                 buttons[row][col].setFocusPainted(false);
                 buttons[row][col].addActionListener(this);
                 add(buttons[row][col]);
+
+                buttons[row][col].addActionListener(e -> requestFocusInWindow());
+                add(buttons[row][col]);
             }
         }
     }
@@ -47,7 +52,13 @@ public class Main extends JFrame implements ActionListener {
         for (int row = 0; row < 5; row++) {
             for (int col = 0; col < 5; col++) {
                 buttons[row][col].setText(String.valueOf(board[row * 5 + col]));
+                buttons[row][col].setBackground(null);
             }
+        }
+
+        int[] activeCell = getActiveCell();
+        if (activeCell != null && activeCell.length == 2) {
+            buttons[activeCell[0]][activeCell[1]].setBackground(Color.lightGray);
         }
     }
 
@@ -67,7 +78,6 @@ public class Main extends JFrame implements ActionListener {
         }
 
         int result = makeMove(row, col);
-
         updateBoard();
 
         if (result == 1) {
@@ -77,13 +87,29 @@ public class Main extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "It's a tie!");
             resetGame();
         }
-    }
-    public void placeMove(){}
 
-    public void keyPressed(KeyEvent e){
+        requestFocusInWindow();
+    }
+
+    public void placeMove() {
+        int[] activeCell = getActiveCell();
+        int result = makeMove(activeCell[0], activeCell[1]);
+        updateBoard();
+
+        if (result == 1) {  //win
+            JOptionPane.showMessageDialog(this, "Player " + getCurrentPlayer() + " wins!");
+            resetGame();
+        } else if (result == 2) {  //tie
+            JOptionPane.showMessageDialog(this, "It's a tie!");
+            resetGame();
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
 
-        switch (keyCode){
+        switch (keyCode) {
             case KeyEvent.VK_UP:
                 moveActiveCell(0);
                 break;
@@ -101,7 +127,14 @@ public class Main extends JFrame implements ActionListener {
                 placeMove();
                 break;
         }
+        updateBoard();
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
 
     public static void main(String[] args) {
         new Main();

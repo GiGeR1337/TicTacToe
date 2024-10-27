@@ -107,6 +107,22 @@ JNIEXPORT jint JNICALL Java_Main_makeMove
 JNIEXPORT jchar JNICALL Java_Main_getCurrentPlayer
   (JNIEnv *, jobject);
 
+/*
+ * Class:     Main
+ * Method:    getActiveCell
+ * Signature: ()[I
+ */
+JNIEXPORT jintArray JNICALL Java_Main_getActiveCell
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     Main
+ * Method:    moveActiveCell
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_Main_moveActiveCell
+  (JNIEnv *, jobject, jint);
+
 #ifdef __cplusplus
 }
 #endif
