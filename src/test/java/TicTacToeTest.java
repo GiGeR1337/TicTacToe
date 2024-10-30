@@ -18,7 +18,7 @@ public class TicTacToeTest {
             assertEquals(' ', cell);
         }
 
-        assertEquals('X', test.getCurrentPlayer(), "Board: OK");
+        assertEquals('X', test.getCurrentPlayer());
     }
     @Test
     public void TestOfMoveMaking(){
@@ -109,8 +109,7 @@ public class TicTacToeTest {
         test.makeMove(4, 4); // 0
 
         int result = test.makeMove(4, 2);
-
-        assertEquals(2, result, "Game should end in a tie when the board is full with no winner");
+        assertEquals(2, result);
     }
 
     @Test

@@ -78,7 +78,6 @@ public class Main extends JFrame implements ActionListener, KeyListener {
         }
 
         int result = makeMove(row, col);
-        updateBoard();
 
         if (result == 1) {
             JOptionPane.showMessageDialog(this, "Player " + getCurrentPlayer() + " wins!");
@@ -88,13 +87,13 @@ public class Main extends JFrame implements ActionListener, KeyListener {
             resetGame();
         }
 
+        updateBoard();
         requestFocusInWindow();
     }
 
     public void placeMove() {
         int[] activeCell = getActiveCell();
         int result = makeMove(activeCell[0], activeCell[1]);
-        updateBoard();
 
         if (result == 1) {  //win
             JOptionPane.showMessageDialog(this, "Player " + getCurrentPlayer() + " wins!");
@@ -103,6 +102,7 @@ public class Main extends JFrame implements ActionListener, KeyListener {
             JOptionPane.showMessageDialog(this, "It's a tie!");
             resetGame();
         }
+        updateBoard();
     }
 
     @Override
