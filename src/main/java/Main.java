@@ -1,21 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class Main extends JFrame implements ActionListener, KeyListener {
-
-    private JButton[][] buttons = new JButton[5][5];
 
     static {
         System.loadLibrary("libTicTacToe");
     }
 
-    public native void resetGame();
-    public native char[] getBoard();
-    public native int makeMove(int row, int col);
-    public native char getCurrentPlayer();
-    public native int[] getActiveCell();
-    public native void moveActiveCell(int direction);
+    private JButton[][] buttons = new JButton[5][5];
 
     public Main() {
         setTitle("5x5 Tic-Tac-Toe");
@@ -31,6 +27,22 @@ public class Main extends JFrame implements ActionListener, KeyListener {
         setFocusable(true);
         setVisible(true);
     }
+
+    public static void main(String[] args) {
+        new Main();
+    }
+
+    public native void resetGame();
+
+    public native char[] getBoard();
+
+    public native int makeMove(int row, int col);
+
+    public native char getCurrentPlayer();
+
+    public native int[] getActiveCell();
+
+    public native void moveActiveCell(int direction);
 
     private void initializeButtons() {
         for (int row = 0; row < 5; row++) {
@@ -135,8 +147,4 @@ public class Main extends JFrame implements ActionListener, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {}
-
-    public static void main(String[] args) {
-        new Main();
-    }
 }
