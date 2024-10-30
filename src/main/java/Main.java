@@ -114,6 +114,7 @@ public class Main extends JFrame implements ActionListener, KeyListener {
             JOptionPane.showMessageDialog(this, "It's a tie!");
             resetGame();
         }
+
         updateBoard();
     }
 
